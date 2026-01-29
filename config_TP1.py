@@ -25,6 +25,7 @@ import robot_braitenberg_loveWall
 import robot_braitenberg_hateWall
 import robot_braitenberg_loveBot
 import robot_braitenberg_hateBot
+import robot_subsomption
 import robot_dumb
 
 def initialize_robots(arena_size=-1, particle_box=-1): # particle_box: size of the robot enclosed in a square
@@ -35,7 +36,13 @@ def initialize_robots(arena_size=-1, particle_box=-1): # particle_box: size of t
     #robots.append(robot_braitenberg_loveWall.Robot_player(4, y_center, 0, name="My Robot", team="A"))
     #robots.append(robot_braitenberg_hateWall.Robot_player(4, y_center, 0, name="HateWall", team="A"))
     #robots.append(robot_braitenberg_loveBot.Robot_player(50, y_center, 0, name="LoveBot", team="A"))
-    robots.append(robot_braitenberg_hateBot.Robot_player(50, y_center, 0, name="LoveBot", team="A"))
-    robots.append(robot_dumb.Robot_player(70, y_center, 0, name="Third robot", team="Team Dumb"))
+    #robots.append(robot_braitenberg_hateBot.Robot_player(50, y_center, 0, name="LoveBot", team="A"))
+    robots.append(robot_subsomption.Robot_player(70, y_center, 180, name="Third robot", team="Team Dumb"))
     #robots.append(robot_dumb.Robot_player(x_center, y_center, 270, name="Fourth robot", team="Team Dumb"))
+    robots.append(robot_subsomption.Robot_player(50, y_center+5, 0, name="LoveBot", team="A"))
+    robots.append(robot_subsomption.Robot_player(50, y_center+20, 0, name="LoveBot", team="A"))
+    robots.append(robot_subsomption.Robot_player(50, y_center+30, 0, name="LoveBot", team="A"))
+    robots.append(robot_subsomption.Robot_player(50, y_center+40, 0, name="LoveBot", team="A"))
+    
+
     return robots

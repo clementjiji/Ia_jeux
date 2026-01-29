@@ -1,0 +1,11 @@
+# Formats compilés
+*.pyc
+*.pyo
+*.pyd
+
+# Dossiers de cache
+__pycache__/
+
+# Environnements virtuels (si tu en as)
+venv/
+.env/
