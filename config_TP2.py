@@ -36,7 +36,7 @@ def initialize_robots(arena_size=-1, particle_box=-1): # particle_box: size of t
     y_center = arena_size // 2 - particle_box / 2
     robots = []
     #robots.append(robot_randomsearch.Robot_player(x_center, y_center, 0, name="My Robot", team="A",evaluations=evaluations,it_per_evaluation=it_per_evaluation)) # start from left: 4, y_center
-    #robots.append(randomsearch2.Robot_player(x_center, y_center, 0, name="My Robot", team="A",evaluations=evaluations,it_per_evaluation=it_per_evaluation)) # start from left: 4, y_center
-    robots.append(genetic_algorithms.Robot_player(x_center, y_center, 0, name="My Robot", team="A",evaluations=evaluations,it_per_evaluation=it_per_evaluation)) # start from left: 4, y_center
+    robots.append(randomsearch2.Robot_player(x_center, y_center, 0, name="My Robot", team="A",evaluations=evaluations,it_per_evaluation=it_per_evaluation)) # start from left: 4, y_center
+    #robots.append(genetic_algorithms.Robot_player(x_center, y_center, 0, name="My Robot", team="A",evaluations=evaluations,it_per_evaluation=it_per_evaluation)) # start from left: 4, y_center
 
     return robots

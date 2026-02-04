@@ -1,5 +1,5 @@
 
-from robot import * 
+from robot import *
 import math
 
 nb_robots = 0
@@ -58,7 +58,7 @@ class Robot_player(Robot):
                     print ("\tparameters           =",self.param)
                     print ("\ttranslations         =",self.log_sum_of_translation,"; rotations =",self.log_sum_of_rotation) # *effective* translation/rotation (ie. measured from displacement)
                     print ("\tdistance from origin =",math.sqrt((self.x-self.x_0)**2+(self.y-self.y_0)**2))
-                
+
                     self.score_run = self.log_sum_of_translation * (1-abs(self.log_sum_of_rotation))
                     self.accumulated_score += self.score_run
                     self.current_run += 1
@@ -68,7 +68,7 @@ class Robot_player(Robot):
                         self.iteration = self.iteration + 1
                         return 0,0,True
 
-                    
+
 
                     if self.best_score is None or self.accumulated_score > self.best_score :
                         self.best_score = self.accumulated_score
@@ -87,17 +87,17 @@ class Robot_player(Robot):
                                 self.son_param[random_param] = val
                                 self.param = self.son_param[:]
                                 break
-                        
-                        self.score_run = 0
-                        self.accumulated_score = 0
-                        self.current_run = 0
 
-                    
+                    self.score_run = 0
+                    self.accumulated_score = 0
+                    self.current_run = 0
+
+
                 self.iteration = self.iteration + 1
                 self.trial = self.trial + 1
                 return 0, 0, True
-                
-                
+
+
 
         # fonction de contrôle (qui dépend des entrées sensorielles, et des paramètres)
         translation = math.tanh ( self.param[0] + self.param[1] * sensors[sensor_front_left] + self.param[2] * sensors[sensor_front] + self.param[3] * sensors[sensor_front_right] )
@@ -112,6 +112,6 @@ class Robot_player(Robot):
                 print ("\trobot's team (if relevant)      =",sensor_team)
 
         self.iteration = self.iteration + 1
-        
+
 
         return translation, rotation, False
