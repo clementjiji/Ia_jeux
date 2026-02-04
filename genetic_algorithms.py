@@ -16,6 +16,8 @@ class Robot_player(Robot):
     it_per_evaluation = 400
     trial = 0
 
+    son_param = []
+
     x_0 = 0
     y_0 = 0
     theta_0 = 0 # in [0,360]
@@ -66,15 +68,25 @@ class Robot_player(Robot):
                         self.iteration = self.iteration + 1
                         return 0,0,True
 
-                    else:
-                        if self.best_score is None or self.accumulated_score > self.best_score :
-                            self.best_score = self.accumulated_score
-                            self.best_param = self.param[:]
+                    
 
-                        if(self.trial >= 500):
-                            self.param = self.best_param[:]
-                        else:
-                            self.param = [random.randint(-1, 1) for i in range(8)]
+                    if self.best_score is None or self.accumulated_score > self.best_score :
+                        self.best_score = self.accumulated_score
+                        self.best_param = self.param[:]
+                    else:
+                        self.param = self.best_param[:]
+
+                    if(self.trial >= 500):
+                        self.param = self.best_param[:]
+                    else:
+                        random_param = random.randint(0,7)
+                        self.son_param = self.param[:]
+                        while True:
+                            val = random.randint(-1, 1)
+                            if val != self.son_param[random_param]:
+                                self.son_param[random_param] = val
+                                self.param = self.son_param[:]
+                                break
                         
                         self.score_run = 0
                         self.accumulated_score = 0
