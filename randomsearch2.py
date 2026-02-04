@@ -20,6 +20,9 @@ class Robot_player(Robot):
     y_0 = 0
     theta_0 = 0 # in [0,360]
 
+    current_run = 0
+    accumulated_score = 0
+
     best_score = None
     best_param = None
     best_trial = -1
@@ -53,32 +56,18 @@ class Robot_player(Robot):
                     print ("\tparameters           =",self.param)
                     print ("\ttranslations         =",self.log_sum_of_translation,"; rotations =",self.log_sum_of_rotation) # *effective* translation/rotation (ie. measured from displacement)
                     print ("\tdistance from origin =",math.sqrt((self.x-self.x_0)**2+(self.y-self.y_0)**2))
-                    
-                if(self.trial >= 500):
-                  self.param = self.best_param
-                else:
-                  self.param = [random.randint(-1, 1) for i in range(8)]
 
-                
-                self.trial = self.trial + 1
-                print ("Trying strategy no.",self.trial)
-                self.iteration = self.iteration + 1
-                score1 = self.log_sum_of_translation*(1-abs(self.log_sum_of_rotation))
-                if(self.best_score == None):
-                  self.best_score = score1
-                  self.best_param = self.param
-                  self.best_trial = self.trial
-                  
-                  
-                else :
-                  if(self.best_score < score1) :
-                    self.best_score = score1
-                    self.best_param = self.param
-                    self.best_trial = self.trial
-                    
-                print("\tscore:",self.best_score)
-                print("\ttrial:",self.best_trial)
-                return 0, 0, True # ask for reset
+                    self.score_run = self.log_sum_of_translation * (1-abs(self.log_sum_of_rotation))
+                    self.accumulated_score += self.current_run
+                    self.current_run += 1
+
+                    if self.current_run < 3:
+                        self.theta_0 = random.randint(0,360)
+                        return 0,0,True
+                 
+        
+                    print("parametre =\n",self.param)
+                    print("Total score =",self.accumulated_score)
 
         # fonction de contrôle (qui dépend des entrées sensorielles, et des paramètres)
         translation = math.tanh ( self.param[0] + self.param[1] * sensors[sensor_front_left] + self.param[2] * sensors[sensor_front] + self.param[3] * sensors[sensor_front_right] )
