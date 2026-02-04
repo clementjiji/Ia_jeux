@@ -80,6 +80,8 @@ class Robot_player(Robot):
                         self.accumulated_score = 0
                         self.current_run = 0
 
+                #print("parametre =\n",self.param)
+                #print("best_parametre =\n",self.best_param)
                     
                 self.iteration = self.iteration + 1
                 self.trial = self.trial + 1
