@@ -30,7 +30,6 @@ import robot_optimize
 import robot_randomsearch
 import randomsearch2
 import genetic_algorithms
-import genetic_algorithms
 
 def initialize_robots(arena_size=-1, particle_box=-1): # particle_box: size of the robot enclosed in a square
     x_center = arena_size // 2 - particle_box / 2
