@@ -43,7 +43,7 @@ class Robot_player(Robot):
 
         
 
-        if(sensors[sensor_front]<0.3 or sensors[sensor_front_left]+sensors[sensor_front_right]<0.3): 
+        if(sensor_to_wall[sensor_front]<0.3 or sensor_to_wall[sensor_front_left]+sensor_to_wall[sensor_front_right]<0.3): 
             prio_current = 100
             if prio_current > prio_max:
                 prio_max = prio_current
@@ -53,7 +53,16 @@ class Robot_player(Robot):
         if(sensor_to_robot[sensor_front]<0.3 or sensor_to_robot[sensor_front_left]+sensor_to_robot[sensor_front_left] < 0.3):
             prio_current = 70
             if prio_current > prio_max:
-                
+                prio_max = prio_current
+                for i in range(8):
+                    if sensor_team[i] == self.team_name:
+                        translation = sensor_to_robot[sensor_front]*0.5
+                        rotation = (sensor_to_robot[sensor_left] + sensor_to_robot[sensor_front_left]) - (sensor_to_robot[sensor_right] + sensor_to_robot[sensor_front_right])
+                    else:
+                        translation = sensor_to_robot[sensor_front]*0.5
+                        rotation = (sensor_to_robot[sensor_right] + sensor_to_robot[sensor_front_right]) - (sensor_to_robot[sensor_left] + sensor_to_robot[sensor_front_left])
+
+
 
         
 

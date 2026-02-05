@@ -121,7 +121,7 @@ class Robot_player(Robot):
                 print ("\trobot's name (if relevant)      =",sensor_robot)
                 print ("\trobot's team (if relevant)      =",sensor_team)
 
-        # score = translation * (1 - abs(rotation))
+
         self.step_score += translation * (1 - abs(rotation))
 
         self.iteration = self.iteration + 1
