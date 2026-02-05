@@ -24,7 +24,7 @@ class Robot_player(Robot):
 
     current_run = 0
     accumulated_score = 0
-    step_score = 0  # Score accumulé à chaque pas de temps pendant un run
+    step_score = 0  
 
     best_score = None
     best_param = None
