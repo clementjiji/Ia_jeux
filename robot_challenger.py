@@ -40,15 +40,18 @@ class Robot_player(Robot):
                 sensor_to_robot.append(1.0)
         
 
-        if(sensor_to_wall[sensor_front]<0.3 or sensor_to_wall[sensor_front_left]<0.3 or sensor_to_wall[sensor_front_right]<0.3 or sensor_to_wall[sensor_front_left]<0.3 or sensor_to_wall[sensor_left]<0.3 or sensor_to_wall[sensor_rear]<0.3 or sensor_to_wall[sensor_rear_left]<0.3 or sensor_to_wall[sensor_rear_right]<0.3): 
-            translation = sensor_to_wall[sensor_front]
-            rotation = ((sensor_to_wall[sensor_front_left]) - (sensor_to_wall[sensor_front_right])) + (sensor_to_wall[sensor_front] - 1) * 0.5
+        if(sensor_to_wall[sensor_front]<0.5 or sensor_to_wall[sensor_front_left]<0.5 or sensor_to_wall[sensor_front_right]<0.5 or sensor_to_wall[sensor_front_left]<0.5 or sensor_to_wall[sensor_left]<0.5 or sensor_to_wall[sensor_rear]<0.5 or sensor_to_wall[sensor_rear_left]<0.5 or sensor_to_wall[sensor_rear_right]<0.5): 
+            translation = sensor_to_wall[sensor_front] * 0.3 + 0.3 
+            rotation = ((sensor_to_wall[sensor_front_left]) - (sensor_to_wall[sensor_front_right])) + (random.random()-0.5)*0.5
+
         
-        elif(sensor_to_robot[sensor_front] + sensor_to_robot[sensor_front_right] + sensor_to_robot[sensor_front_left] < 2.5 or sensor_to_robot[sensor_left]+sensor_to_robot[sensor_right] < 1.5 or sensor_to_robot[sensor_rear]<0.5 or sensor_to_robot[sensor_rear_left]<0.5 or sensor_to_robot[sensor_rear_right]<0.5):
+        elif(sensor_to_robot[sensor_front]<0.5 or sensor_to_robot[sensor_front_left]<0.5 or sensor_to_robot[sensor_front_right]<0.5 or sensor_to_robot[sensor_front_left]<0.5 or sensor_to_robot[sensor_left]<0.5 or sensor_to_robot[sensor_rear]<0.5 or sensor_to_robot[sensor_rear_left]<0.5 or sensor_to_robot[sensor_rear_right]<0.5):
             for i in range(8):
+                translation = 0.5
+                rotation = 0.1
                 if sensor_view[i] == 2:
                     if sensor_team[i] == self.team_name:
-                        translation = sensor_to_robot[sensor_front]*0.5
+                        translation = sensor_to_robot[sensor_front]*0.5+0.3
                         rotation = (sensor_to_robot[sensor_left] + sensor_to_robot[sensor_front_left]) - (sensor_to_robot[sensor_right] + sensor_to_robot[sensor_front_right])
                         break
                     else:
