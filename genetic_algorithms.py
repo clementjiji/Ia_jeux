@@ -16,12 +16,15 @@ class Robot_player(Robot):
     it_per_evaluation = 400
     trial = 0
 
+    son_param = []
+
     x_0 = 0
     y_0 = 0
     theta_0 = 0 # in [0,360]
 
     current_run = 0
     accumulated_score = 0
+    step_score = 0  # Score accumulé à chaque pas de temps pendant un run
 
     best_score = None
     best_param = None
@@ -53,36 +56,55 @@ class Robot_player(Robot):
         # toutes les X itérations: le robot est remis à sa position initiale de l'arène avec une orientation aléatoire
         if self.iteration % self.it_per_evaluation == 0:
                 if self.iteration > 0:
-                    print ("\tparameters           =",self.param)
-                    print ("\ttranslations         =",self.log_sum_of_translation,"; rotations =",self.log_sum_of_rotation) # *effective* translation/rotation (ie. measured from displacement)
-                    print ("\tdistance from origin =",math.sqrt((self.x-self.x_0)**2+(self.y-self.y_0)**2))
+                    #print ("\tparameters           =",self.param)
+                    #print ("\ttranslations         =",self.log_sum_of_translation,"; rotations =",self.log_sum_of_rotation) # *effective* translation/rotation (ie. measured from displacement)
+                    #print ("\tdistance from origin =",math.sqrt((self.x-self.x_0)**2+(self.y-self.y_0)**2))
 
-                    self.score_run = self.log_sum_of_translation * (1-abs(self.log_sum_of_rotation))
+                    self.score_run = self.step_score
                     self.accumulated_score += self.score_run
                     self.current_run += 1
+
+                    print("best_score:",self.best_score)
+                    print("score_run:",self.score_run)
 
                     if self.current_run < 3:
                         self.theta_0 = random.randint(0,360)
                         self.iteration = self.iteration + 1
                         return 0,0,True
 
+
+
+                    if self.best_score is None or self.accumulated_score > self.best_score :
+                        self.best_score = self.accumulated_score
+                        self.best_param = self.param[:]
                     else:
-                        if self.best_score is None or self.accumulated_score > self.best_score :
-                            self.best_score = self.accumulated_score
-                            self.best_param = self.param[:]
+                        self.param = self.best_param[:]
 
-                        if(self.trial >= 500):
-                            self.param = self.best_param[:]
-                        else:
-                            self.param = [random.randint(-1, 1) for i in range(8)]
+                    if(self.trial >= 500):
+                        self.param = self.best_param[:]
+                    else:
+                        random_param = random.randint(0,7)
+                        self.son_param = self.param[:]
+                        while True:
+                            val = random.randint(-1, 1)
+                            if val != self.son_param[random_param]:
+                                self.son_param[random_param] = val
+                                self.param = self.son_param[:]
+                                print("son_param:",self.son_param)
+                                
+                                print("meilleur individue trouver")
+                                break
 
-                        self.score_run = 0
-                        self.accumulated_score = 0
-                        self.current_run = 0
+                    self.score_run = 0
+                    self.accumulated_score = 0
+                    self.current_run = 0
 
 
                 self.iteration = self.iteration + 1
                 self.trial = self.trial + 1
+                self.step_score = 0  
+                print("meilleur parametre ",self.best_param)
+                print("pour le trial: ",self.trial)
                 return 0, 0, True
 
 
@@ -99,8 +121,9 @@ class Robot_player(Robot):
                 print ("\trobot's name (if relevant)      =",sensor_robot)
                 print ("\trobot's team (if relevant)      =",sensor_team)
 
-        self.iteration = self.iteration + 1
-        #print("Total score =",self.best_score)
+        # score = translation * (1 - abs(rotation))
+        self.step_score += translation * (1 - abs(rotation))
 
+        self.iteration = self.iteration + 1
 
         return translation, rotation, False
