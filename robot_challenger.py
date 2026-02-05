@@ -25,8 +25,6 @@ class Robot_player(Robot):
 
     def step(self, sensors, sensor_view=None, sensor_robot=None, sensor_team=None):
 
-        prio_max = 10
-        prio_current = 0
         
         sensor_to_wall = []
         sensor_to_robot = []
@@ -40,36 +38,32 @@ class Robot_player(Robot):
             else:
                 sensor_to_wall.append(1.0)
                 sensor_to_robot.append(1.0)
-
         
 
-        if(sensor_to_wall[sensor_front]<0.3 or sensor_to_wall[sensor_front_left]+sensor_to_wall[sensor_front_right]<0.3): 
-            prio_current = 100
-            if prio_current > prio_max:
-                prio_max = prio_current
-                translation = sensor_to_wall[sensor_front]
-                rotation = ((sensor_to_wall[sensor_front_left]) - (sensor_to_wall[sensor_front_right])) + (sensor_to_wall[sensor_front] - 1) * 0.5
+        if(sensor_to_wall[sensor_front]<0.3 or sensor_to_wall[sensor_front_left]<0.3 or sensor_to_wall[sensor_front_right]<0.3 or sensor_to_wall[sensor_front_left]<0.3 or sensor_to_wall[sensor_left]<0.3 or sensor_to_wall[sensor_rear]<0.3 or sensor_to_wall[sensor_rear_left]<0.3 or sensor_to_wall[sensor_rear_right]<0.3): 
+            translation = sensor_to_wall[sensor_front]
+            rotation = ((sensor_to_wall[sensor_front_left]) - (sensor_to_wall[sensor_front_right])) + (sensor_to_wall[sensor_front] - 1) * 0.5
         
-        if(sensor_to_robot[sensor_front]<0.3 or sensor_to_robot[sensor_front_left]+sensor_to_robot[sensor_front_left] < 0.3):
-            prio_current = 70
-            if prio_current > prio_max:
-                prio_max = prio_current
-                for i in range(8):
+        elif(sensor_to_robot[sensor_front] + sensor_to_robot[sensor_front_right] + sensor_to_robot[sensor_front_left] < 2.5 or sensor_to_robot[sensor_left]+sensor_to_robot[sensor_right] < 1.5 or sensor_to_robot[sensor_rear]<0.5 or sensor_to_robot[sensor_rear_left]<0.5 or sensor_to_robot[sensor_rear_right]<0.5):
+            for i in range(8):
+                if sensor_view[i] == 2:
                     if sensor_team[i] == self.team_name:
                         translation = sensor_to_robot[sensor_front]*0.5
                         rotation = (sensor_to_robot[sensor_left] + sensor_to_robot[sensor_front_left]) - (sensor_to_robot[sensor_right] + sensor_to_robot[sensor_front_right])
+                        break
                     else:
                         translation = sensor_to_robot[sensor_front]*0.5
                         rotation = (sensor_to_robot[sensor_right] + sensor_to_robot[sensor_front_right]) - (sensor_to_robot[sensor_left] + sensor_to_robot[sensor_front_left])
+                        break
+
+        else:
+            param = [1, 1, 1, 1, 1, -1, 1, -1]
+            translation = param[0] + param[1] * sensors[sensor_front_left] + param[2] * sensors[sensor_front] + param[3] * sensors[sensor_front_right] 
+            rotation = param[4] + param[5] * sensors[sensor_front_left] + param[6] * sensors[sensor_front] + param[7] * sensors[sensor_front_right] 
 
 
 
         
 
-
-
-
-        translation = sensors[sensor_front]
-        rotation = 1.0 * sensors[sensor_front_left] - 1.0 * sensors[sensor_front_right] + (random.random()-0.5)*0.1
         return translation, rotation, False
 
