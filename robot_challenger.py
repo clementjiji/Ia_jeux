@@ -52,12 +52,13 @@ class Robot_player(Robot):
                 if sensor_view[i] == 2:
                     if sensor_team[i] == self.team_name:
                         translation = sensor_to_robot[sensor_front]*0.5+0.3
-                        rotation = (sensor_to_robot[sensor_left] + sensor_to_robot[sensor_front_left]) - (sensor_to_robot[sensor_right] + sensor_to_robot[sensor_front_right])
+                        rotation = (sensor_to_robot[sensor_left] + sensor_to_robot[sensor_front_left])+0.5 - (sensor_to_robot[sensor_right] + sensor_to_robot[sensor_front_right])+0.5
                         break
                     else:
                         translation = sensor_to_robot[sensor_front]*0.5
                         rotation = (sensor_to_robot[sensor_right] + sensor_to_robot[sensor_front_right]) - (sensor_to_robot[sensor_left] + sensor_to_robot[sensor_front_left])
                         break
+            print("\nmdrrrrrr\n")
 
         else:
             param = [1, 1, 1, 1, 1, -1, 1, -1]
