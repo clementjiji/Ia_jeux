@@ -25,7 +25,7 @@ class Robot_player(Robot):
 
     def step(self, sensors, sensor_view=None, sensor_robot=None, sensor_team=None):
 
-        
+        self.memory += 1
         sensor_to_wall = []
         sensor_to_robot = []
         for i in range (0,8):
@@ -40,49 +40,61 @@ class Robot_player(Robot):
                 sensor_to_robot.append(1.0)
         
 
-        if(sensor_to_wall[sensor_front]<0.5 or sensor_to_wall[sensor_front_left]<0.5 or sensor_to_wall[sensor_front_right]<0.5 or sensor_to_wall[sensor_front_left]<0.5 or sensor_to_wall[sensor_left]<0.5 ): 
-            translation = sensor_to_wall[sensor_front] * 0.5
-            rotation = (sensor_to_wall[sensor_front_left]) - (sensor_to_wall[sensor_front_right])
-            if abs(rotation)<0.1:
-                rotation = 0.7 + (random.random() - 0.5) * 0.3
-            else:
-                rotation += (random.random() - 0.5) * 0.3
+        if(sensor_to_wall[sensor_front]<0.35 or sensor_to_wall[sensor_front_left]<0.35 or sensor_to_wall[sensor_front_right]<0.35 or sensor_to_wall[sensor_right]<0.35 or sensor_to_wall[sensor_left]<0.35 or sensor_to_wall[sensor_rear]<0.35 or sensor_to_wall[sensor_rear_left]<0.35 or sensor_to_wall[sensor_rear_right]<0.35):
+            
+            translation = sensor_to_wall[sensor_front] * 0.2
+            rotation = ((sensor_to_wall[sensor_front_left] + sensor_to_wall[sensor_left]) - (sensor_to_wall[sensor_front_right] + sensor_to_wall[sensor_right])) + (random.random()-0.5)*0.5
 
-        
-        elif(sensor_to_robot[sensor_front]<0.5 or sensor_to_robot[sensor_front_left]<0.5 or sensor_to_robot[sensor_front_right]<0.5 or sensor_to_robot[sensor_front_left]<0.5 or sensor_to_robot[sensor_left]<0.5 or sensor_to_robot[sensor_rear]<0.5 or sensor_to_robot[sensor_rear_left]<0.5 or sensor_to_robot[sensor_rear_right]<0.5):
-            param = [1, 1, 1, 1, 1, -1, 1, -1]
-            robot_trouve = False
+            if self.memory > 50:
+                if (sensor_to_wall[sensor_front] > 0.5):
+                    translation = 1
+                    rotation = 0
+                    self.memory = 0
+                else:
+                    translation = 0
+                    rotation = 1  
+
+        #elif(sensor_to_robot[sensor_front]<0.5 or sensor_to_robot[sensor_front_left]<0.5 or sensor_to_robot[sensor_front_right]<0.5 or sensor_to_robot[sensor_right]<0.5 or sensor_to_robot[sensor_left]<0.5 or sensor_to_robot[sensor_rear]<0.5 or sensor_to_robot[sensor_rear_left]<0.5 or sensor_to_robot[sensor_rear_right]<0.5):
+        #    for i in range(8):
+        #        translation = 0.5
+        #        rotation = 0.1
+        #        if sensor_view[i] == 2:
+        #            if sensor_team[i] == self.team_name:
+        #                translation = sensor_to_robot[sensor_front]*0.5+0.3
+        #                rotation = (sensor_to_robot[sensor_left] + sensor_to_robot[sensor_front_left]) - (sensor_to_robot[sensor_right] + sensor_to_robot[sensor_front_right])
+        #                break
+        #            else:
+        #                translation = sensor_to_robot[sensor_front]*0.5
+        #                rotation = (sensor_to_robot[sensor_right] + sensor_to_robot[sensor_front_right]) - (sensor_to_robot[sensor_left] + sensor_to_robot[sensor_front_left])
+        #                break
+
+        elif(sensor_to_robot[sensor_front]<0.5 or sensor_to_robot[sensor_front_left]<0.5 or sensor_to_robot[sensor_front_right]<0.5 or sensor_to_robot[sensor_right]<0.5 or sensor_to_robot[sensor_left]<0.5 or sensor_to_robot[sensor_rear]<0.5 or sensor_to_robot[sensor_rear_left]<0.5 or sensor_to_robot[sensor_rear_right]<0.5):
             for i in range(8):
+                #translation = 0.5
+                #rotation = -1
                 if sensor_view[i] == 2:
-                    robot_trouve = True
-                    if sensor_team[i] == self.team_name:
-                        translation = sensor_to_robot[sensor_front]*0.5+0.3
-                        #translation = param[0] + param[1] * sensors[sensor_front_left] + param[2] * sensors[sensor_front] + param[3] * sensors[sensor_front_right] 
-                        rotation = (sensor_to_robot[sensor_left] + sensor_to_robot[sensor_front_left]) - (sensor_to_robot[sensor_right] + sensor_to_robot[sensor_front_right])
-                        break
-                    else:
-                        translation = sensor_to_robot[sensor_front]*0.5
-                        rotation = (sensor_to_robot[sensor_right] + sensor_to_robot[sensor_front_right]) - (sensor_to_robot[sensor_left] + sensor_to_robot[sensor_front_left])
-                        break
-            if not robot_trouve:
-                translation = 1
-                rotation = -0.5
-                print("\nmdrrrrrr\n")
+
+                    translation = sensor_to_robot[sensor_front]*0.5
+                    rotation = (sensor_to_robot[sensor_left] + sensor_to_robot[sensor_front_left]) - (sensor_to_robot[sensor_right] + sensor_to_robot[sensor_front_right]) + (random.random()-0.5)*0.5
+                    break
+            
+            if self.memory > 100:
+                translation = -1
+                rotation = random.uniform(-1,1)
+                self.memory = 0
 
         else:
             param = [1, 1, 1, 1, 1, -1, 1, -1]
-            if self.memory == 200:
-                translation = param[0] + param[1] * sensors[sensor_front_left] + param[2] * sensors[sensor_front] + param[3] * sensors[sensor_front_right]
-                rotation = random.uniform(0, 5)
+            translation = param[0] + param[1] * sensors[sensor_front_left] + param[2] * sensors[sensor_front] + param[3] * sensors[sensor_front_right] 
+            rotation = param[4] + param[5] * sensors[sensor_front_left] + param[6] * sensors[sensor_front] + param[7] * sensors[sensor_front_right]
 
-            else:
-                translation = param[0] + param[1] * sensors[sensor_front_left] + param[2] * sensors[sensor_front] + param[3] * sensors[sensor_front_right] 
-                rotation = param[4] + param[5] * sensors[sensor_front_left] + param[6] * sensors[sensor_front] + param[7] * sensors[sensor_front_right] 
+            if self.memory > 10:
+                translation = 1
+                rotation = random.uniform(-1,1)
+                self.memory = 0
 
 
 
-        self.memory += 1
         
 
         return translation, rotation, False
-
