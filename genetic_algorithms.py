@@ -70,6 +70,7 @@ class Robot_player(Robot):
                     if self.current_run < 3:
                         self.theta_0 = random.randint(0,360)
                         self.iteration = self.iteration + 1
+                        self.step_score = 0
                         return 0,0,True
 
 
@@ -86,7 +87,7 @@ class Robot_player(Robot):
                         random_param = random.randint(0,7)
                         self.son_param = self.param[:]
                         while True:
-                            val = random.randint(-1, 1)
+                            val = random.uniform(-1, 1)
                             if val != self.son_param[random_param]:
                                 self.son_param[random_param] = val
                                 self.param = self.son_param[:]

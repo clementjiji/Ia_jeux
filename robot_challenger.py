@@ -46,7 +46,7 @@ class Robot_player(Robot):
             rotation = ((sensor_to_wall[sensor_front_left] + sensor_to_wall[sensor_left]) - (sensor_to_wall[sensor_front_right] + sensor_to_wall[sensor_right])) + (random.random()-0.5)*0.5
 
             if self.memory > 20:
-                if (sensor_to_wall[sensor_front] > 0.5):
+                if (sensor_to_wall[sensor_front] > 0.5 or sensor_to_wall[sensor_front_left] + sensor_to_wall[sensor_left]>0.5 or sensor_to_wall[sensor_front_right] + sensor_to_wall[sensor_right] >0.5):
                     translation = 1
                     rotation = 0
                     self.memory = 0
@@ -71,7 +71,7 @@ class Robot_player(Robot):
 
 
         else:
-            param = [1, 1, 1, 1, 1, -1, 1, -1]
+            param = [1, 0.9948070854197746, 1, 0.9537018668899915, 1, -0.9363665062334459, -0.7649887986452448, 0.5241383698298889]
             translation = param[0] + param[1] * sensors[sensor_front_left] + param[2] * sensors[sensor_front] + param[3] * sensors[sensor_front_right] 
             rotation = param[4] + param[5] * sensors[sensor_front_left] + param[6] * sensors[sensor_front] + param[7] * sensors[sensor_front_right]
 
