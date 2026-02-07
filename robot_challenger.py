@@ -40,20 +40,23 @@ class Robot_player(Robot):
                 sensor_to_robot.append(1.0)
         
 
-        if(sensor_to_wall[sensor_front]<0.3 or sensor_to_wall[sensor_front_left]<0.3 or sensor_to_wall[sensor_front_right]<0.3 or sensor_to_wall[sensor_right]<0.3 or sensor_to_wall[sensor_left]<0.3 or sensor_to_wall[sensor_rear]<0.3 or sensor_to_wall[sensor_rear_left]<0.3 or sensor_to_wall[sensor_rear_right]<0.3):
-            
+        if(sensor_to_wall[sensor_front]<0.15 or sensor_to_wall[sensor_front_left]<0.15 or sensor_to_wall[sensor_front_right]<0.15 or sensor_to_wall[sensor_right]<0.15 or sensor_to_wall[sensor_left]<0.15 or sensor_to_wall[sensor_rear]<0.15 or sensor_to_wall[sensor_rear_left]<0.15 or sensor_to_wall[sensor_rear_right]<0.15):
+            if(self.robot_id == 3):
+                print("dans mur !!!!\n\n")
             translation = sensor_to_wall[sensor_front] * 0.2
             rotation = ((sensor_to_wall[sensor_front_left] + sensor_to_wall[sensor_left]) - (sensor_to_wall[sensor_front_right] + sensor_to_wall[sensor_right])) + (random.random()-0.5)
 
-            if self.memory > 20:
-                if (sensor_to_wall[sensor_front] > 0.5 or sensor_to_wall[sensor_front_left] + sensor_to_wall[sensor_left]>0.5 or sensor_to_wall[sensor_front_right] + sensor_to_wall[sensor_right] >0.5):
-                    translation = 1
-                    rotation = 0
-                    self.memory = 0
-                else:
-                    translation = 0
-                    rotation = 1  
-
+            if self.memory > 5:
+                translation = 1
+                rotation = random.randint(-1,1)
+                self.memory = 0
+                if self.robot_id == 3:
+                    print("dans le if 5\n")
+                    print("nb random:",rotation)
+                    print("robot id:",self.robot_id)
+                    print("\n")
+            if self.id == 3:
+                print("robot id: ",self.id," rotation: ",rotation," translation: ",translation)
         #elif(sensor_to_robot[sensor_front]<0.5 or sensor_to_robot[sensor_front_left]<0.5 or sensor_to_robot[sensor_front_right]<0.5 or sensor_to_robot[sensor_right]<0.5 or sensor_to_robot[sensor_left]<0.5 or sensor_to_robot[sensor_rear]<0.5 or sensor_to_robot[sensor_rear_left]<0.5 or sensor_to_robot[sensor_rear_right]<0.5):
         #    for i in range(8):
         #        translation = 0.5
@@ -77,10 +80,12 @@ class Robot_player(Robot):
                     translation = sensor_to_robot[sensor_front]*0.5
                     rotation = (sensor_to_robot[sensor_left] + sensor_to_robot[sensor_front_left]) - (sensor_to_robot[sensor_right] + sensor_to_robot[sensor_front_right]) + (random.random()-0.5)
                     break
-            
-            if self.memory > 100:
-                translation = -1
-                rotation = random.uniform(-1,1)
+            if(self.robot_id == 3):
+                print("dans robot !!!!\n\n")
+            if self.memory > 10:
+                translation = 1
+                rotation = random.randint(-1,1)
+                print("random robot")
                 self.memory = 0
 
 
@@ -88,10 +93,12 @@ class Robot_player(Robot):
             param = [1, 0.9948070854197746, 1, 0.9537018668899915, 1, -0.9363665062334459, -0.7649887986452448, 0.5241383698298889]
             translation = param[0] + param[1] * sensors[sensor_front_left] + param[2] * sensors[sensor_front] + param[3] * sensors[sensor_front_right] 
             rotation = param[4] + param[5] * sensors[sensor_front_left] + param[6] * sensors[sensor_front] + param[7] * sensors[sensor_front_right]
+            if(self.robot_id == 3):
+                print("dans else !!!!\n\n")
 
             if self.memory > 10:
-                translation = 1
-                rotation = random.uniform(-1,1)
+                translation = 0
+                rotation = random.randint(-1,1)
                 self.memory = 0
 
 
