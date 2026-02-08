@@ -2,7 +2,7 @@
 #
 # Binome:
 #  Prénom Nom No_étudiant/e : clément Jiang 21223581
-#  Prénom Nom No_étudiant/e : _________
+#  Prénom Nom No_étudiant/e : rohith RAMASSAMY 21202334
 #
 # check robot.py for sensor naming convention
 # all sensor and motor value are normalized (from 0.0 to 1.0 for sensors, -1.0 to +1.0 for motors)
